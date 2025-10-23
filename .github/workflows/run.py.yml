@@ -1,0 +1,7 @@
+# .github/workflows/run.py.yml
+jobs:
+  run:
+    steps:
+      - name: Execute script
+        env:
+          AIVEN: ${{ secrets.AIVEN }}
