@@ -91,7 +91,7 @@ def map_generation(df,id,lib,geo):
   m = folium.Map(location=[48.858885,2.34694], zoom_start=6, tiles="CartoDB positron")
   df = df[[id,lib,geo]].drop_duplicates()
 
-  for index, row in tqdm(df.iterrows()):
+  for index, row in df.iterrows():
       sim_geo = gpd.GeoSeries(row[geo]).simplify(tolerance=0.001)
       geo_j = sim_geo.to_json()
 
@@ -121,15 +121,20 @@ def load_insee_ref() -> pd.DataFrame:
     """Pull the full table once and keep it in Streamlit's cache."""
     df = query("SELECT * FROM insee_ref")  # fetch only the needed cols
     df = df.drop_duplicates()                                   # tiny safety net
-    return df.sort_values(['libReg', 'libDep', 'libCom'], 
+    return df.sort_values(['libReg', 'libDep', 'libCom','id_com'],
+                          ascending=[True, True, True, True])         # one single sort
+
+def load_geo(id) -> pd.DataFrame:
+    """Pull the full table once and keep it in Streamlit's cache."""
+    df = query("SELECT * FROM com_geo WHERE id_com = '" + id + "'")  # fetch only the needed cols
+    df = df.drop_duplicates()                                   # tiny safety net
+    return df.sort_values(['id_com','libCom','geoCom'],
                           ascending=[True, True, True])         # one single sort
 
 df_insee_ref = load_insee_ref()
 
 # ---------- 2️⃣ Build unique, *sorted* option lists ----------
 regions = df_insee_ref['libReg'].unique().tolist()
-departments = df_insee_ref[['libReg', 'libDep']].drop_duplicates()
-communes = df_insee_ref[['libReg', 'libDep', 'libCom']].drop_duplicates()
 
 with st.sidebar:
     st.header("Sélection géographique")
@@ -159,10 +164,20 @@ with st.sidebar:
     filtered_com = filtered_dep[filtered_dep['libDep'] == option_dep]
     com_options = filtered_com['libCom'].unique().tolist()
 
-    option_om = st.selectbox(
+    option_com = st.selectbox(
         "Commune:",
         options=com_options,
         index=0,
         placeholder="Sélectionner une commune",
         key="com_selectbox"
     )
+df_com = filtered_com[filtered_com['libCom'] == option_com]
+
+id_com = df_com['id_com'].values[0]
+df_geo_com = load_geo(id_com)    
+st.write(f"Vous avez sélectionné la commune de **{option_com}**, dans le département de **{option_dep}**, en région **{option_reg}**.")
+
+print(df_geo_com.head())
+# Affichage de la carte
+map_generation(df_geo_com,'id_com','libCom','geoCom')
+
