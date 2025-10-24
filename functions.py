@@ -23,6 +23,7 @@ from shapely.geometry import shape
 from sqlalchemy import MetaData, Table
 from sqlalchemy.exc import ProgrammingError
 
+<<<<<<< HEAD
 AIVEN_URL ='avnadmin:AVNS_8Nfkstx4GWwAGOxp7OB@pg-11490ac3-jeancabouat-2aa9.j.aivencloud.com:23133/defaultdb?sslmode=require'
 conn_string = "postgresql://" + AIVEN_URL
 engine = create_engine(conn_string)
@@ -31,6 +32,13 @@ engine = create_engine(conn_string)
 # for example:
 # engine = create_engine('postgresql://user:password@host:port/database')
 
+=======
+
+AIVEN_URL = userdata.get('AIVEN')
+conn_string = "postgresql://" + AIVEN_URL
+engine = create_engine(conn_string)
+
+>>>>>>> 2d01427 (test)
 def query_table(table_name):
     """
     Execute a SELECT * query on a specified database table and return the result as a pandas DataFrame.
@@ -64,6 +72,10 @@ def query_table(table_name):
             conn.close()
     return df # 8: Return the resulting pandas DataFrame.
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2d01427 (test)
 
 def query(query):
   """
@@ -101,4 +113,8 @@ def map_generation(df,id,lib,geo):
 
       geo_j.add_to(m)
 
+<<<<<<< HEAD
   display(m)
+=======
+  display(m)
+>>>>>>> 2d01427 (test)
