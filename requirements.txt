@@ -1,7 +1,0 @@
-streamlit
-psycopg2
-geopandas
-folium
-tqdm
-sqlalchemy
-shapely.geometry
