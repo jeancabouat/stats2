@@ -1,6 +1,0 @@
-streamlit
-shapely
-psycopg2
-geopandas
-folium
-sqlalchemy
