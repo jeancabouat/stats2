@@ -1,3 +1,6 @@
+
+#streamlit run /workspaces/stats2/app.py
+
 from io import StringIO
 import requests
 
@@ -111,14 +114,55 @@ import warnings
 with warnings.catch_warnings():
     warnings.simplefilter("ignore", category=pd.errors.SettingWithCopyWarning)
 
-# ref INSEE
-df_insee_ref = query(f"SELECT * FROM insee_ref")
 
-option = st.selectbox(
-    "Région:",
-    df_insee_ref['libReg'].unique().tolist(), # Use the 'Email' column as options
-    index=None,
-    placeholder="Selectionner une région",
-)
+# ---------- 1️⃣ Load / cache the raw data ----------
+@st.cache_data(show_spinner=False)
+def load_insee_ref() -> pd.DataFrame:
+    """Pull the full table once and keep it in Streamlit's cache."""
+    df = query("SELECT * FROM insee_ref")  # fetch only the needed cols
+    df = df.drop_duplicates()                                   # tiny safety net
+    return df.sort_values(['libReg', 'libDep', 'libCom'], 
+                          ascending=[True, True, True])         # one single sort
 
-st.write("Région sélectionnée:", option)
+df_insee_ref = load_insee_ref()
+
+# ---------- 2️⃣ Build unique, *sorted* option lists ----------
+regions = df_insee_ref['libReg'].unique().tolist()
+departments = df_insee_ref[['libReg', 'libDep']].drop_duplicates()
+communes = df_insee_ref[['libReg', 'libDep', 'libCom']].drop_duplicates()
+
+with st.sidebar:
+    st.header("Sélection géographique")
+    # ---------- 3️⃣ Region selectbox ----------
+    option_reg = st.selectbox(
+        "Région:",
+        options=regions,
+        index=0,
+        placeholder="Sélectionner une région",
+        key="reg_selectbox"
+    )
+
+    # ---------- 4️⃣ Department selectbox (filtered) ----------
+    # Filter once (no extra sort)
+    filtered_dep = df_insee_ref[df_insee_ref['libReg'] == option_reg]
+    dep_options = filtered_dep['libDep'].unique().tolist()
+
+    option_dep = st.selectbox(
+        "Département:",
+        options=dep_options,
+        index=0,
+        placeholder="Sélectionner un département",
+        key="dep_selectbox"
+    )
+
+    # ---------- 5️⃣ Commune selectbox (filtered) ----------
+    filtered_com = filtered_dep[filtered_dep['libDep'] == option_dep]
+    com_options = filtered_com['libCom'].unique().tolist()
+
+    option_om = st.selectbox(
+        "Commune:",
+        options=com_options,
+        index=0,
+        placeholder="Sélectionner une commune",
+        key="com_selectbox"
+    )
