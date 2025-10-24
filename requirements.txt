@@ -4,4 +4,4 @@ geopandas
 folium
 tqdm
 sqlalchemy
-shapely.geometry
+shapely
