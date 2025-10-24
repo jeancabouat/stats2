@@ -1,17 +1,6 @@
-<<<<<<< HEAD
 streamlit
 shapely
 psycopg2
 geopandas
 folium
-tqdm
 sqlalchemy
-=======
-streamlit
-psycopg2
-geopandas
-folium
-tqdm
-sqlalchemy
-shapely
->>>>>>> f6261e5 (test)
