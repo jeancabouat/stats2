@@ -7,6 +7,7 @@ import requests
 import pandas as pd
 pd.options.mode.chained_assignment = None  # default='warn'
 import numpy as np
+import streamlit as st
 
 import re
 import json
@@ -25,6 +26,10 @@ from sqlalchemy.exc import ProgrammingError
 from shapely.geometry import shape
 from sqlalchemy import MetaData, Table
 from sqlalchemy.exc import ProgrammingError
+
+import warnings
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore", category=pd.errors.SettingWithCopyWarning)
 
 AIVEN_URL ='avnadmin:AVNS_8Nfkstx4GWwAGOxp7OB@pg-11490ac3-jeancabouat-2aa9.j.aivencloud.com:23133/defaultdb?sslmode=require'
 conn_string = "postgresql://" + AIVEN_URL
@@ -106,20 +111,13 @@ def map_generation(df,id,lib,geo):
 
   display(m)
 
-import streamlit as st
-import pandas as pd
-import numpy as np
-
-import warnings
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore", category=pd.errors.SettingWithCopyWarning)
 
 
 # ---------- 1️⃣ Load / cache the raw data ----------
 @st.cache_data(show_spinner=False)
 def load_insee_ref() -> pd.DataFrame:
     """Pull the full table once and keep it in Streamlit's cache."""
-    df = query("SELECT * FROM insee_ref")  # fetch only the needed cols
+    df = query("SELECT * FROM insee_ref WHERE id_dep ='78'")  # fetch only the needed cols
     df = df.drop_duplicates()                                   # tiny safety net
     return df.sort_values(['libReg', 'libDep', 'libCom','id_com'],
                           ascending=[True, True, True, True])         # one single sort
@@ -179,5 +177,4 @@ st.write(f"Vous avez sélectionné la commune de **{option_com}**, dans le dépa
 
 print(df_geo_com.head())
 # Affichage de la carte
-map_generation(df_geo_com,'id_com','libCom','geoCom')
-
+#map_generation(df_geo_com,'id_com','libCom','geoCom')
