@@ -46,40 +46,6 @@ engine = create_engine(conn_string)
 # for example:
 # engine = create_engine('postgresql://user:password@host:port/database')
 
-def query_table(table_name):
-    """
-    Execute a SELECT * query on a specified database table and return the result as a pandas DataFrame.
-
-    This function connects to the database using a pre-configured engine,
-    executes a query to select all data from the given table name,
-    fetches all results, and converts them into a pandas DataFrame.
-    Finally, it closes the database connection.
-
-    Args:
-        table_name (str): The name of the table to query.
-
-    Returns:
-        pd.DataFrame: A pandas DataFrame containing the data from the specified table.
-                      Returns an empty DataFrame if the table is empty or doesn't exist.
-    """
-    try:
-        conn = engine.connect() # 1: Establish a connection to the database using the global or pre-defined 'engine'.
-        # 2: Construct the SQL query string. Using text() is recommended for literal SQL strings
-        # to prevent potential SQL injection issues and allow SQLAlchemy to properly handle the query.
-        query = text("SELECT * FROM " + table_name + "")
-        result = conn.execute(query) # 3: Execute the SQL query.
-        result_list = result.fetchall() # 4: Fetch all rows from the query result.
-        # 5: Create a pandas DataFrame from the fetched rows and use the column names from the result keys.
-        df = pd.DataFrame(result_list, columns=result.keys())
-    except Exception as e:
-        print(f"An error occurred while querying table {table_name}: {e}")
-        df = pd.DataFrame() # 6: Return an empty DataFrame in case of an error.
-    finally:
-        if 'conn' in locals() and conn: # 7: Ensure the connection is closed even if an error occurs.
-            conn.close()
-    return df # 8: Return the resulting pandas DataFrame.
-
-
 def query(query):
   """
   Executes a SQL query and returns the result as a pandas DataFrame.
@@ -98,7 +64,6 @@ def query(query):
   conn.close()
   return df
 
-
 # ---------- 1️⃣ Load / cache the raw data ----------
 @st.cache_data(show_spinner=False)
 def load_insee_ref() -> pd.DataFrame:
@@ -110,9 +75,7 @@ def load_insee_ref() -> pd.DataFrame:
 
 def load_geo(nom_commune) -> pd.DataFrame:
     """Pull the full table once and keep it in Streamlit's cache."""
-    query_str = """SELECT * FROM com_geo WHERE "lib_com" = '""" + nom_commune + """'"""
-    print(query_str)
-    df = query("SELECT * FROM com_geo WHERE """"lib_com"""" = '" + nom_commune + "'")  # fetch only the needed cols
+    df = query("SELECT * FROM com_geo WHERE """"lib_com"""" = '" + nom_commune + "' AND id_dep ='78'")  # fetch only the needed cols
     df = df.drop_duplicates()                                   # tiny safety net
     return df.sort_values(['id_com','lib_com','geo_com'],
                           ascending=[True, True, True])         # one single sort
@@ -163,14 +126,11 @@ lib_com = df_com['lib_com'].values[0]
 df_geo_com = load_geo(lib_com)    
 st.write(f"Vous avez sélectionné la commune de **{option_com}**, dans le département de **{option_dep}**, en région **{option_reg}**.")
 
-print(df_geo_com.head())
-
 # a.Carte
 #Read the HTML content from the file
-html_content = read_html_file('/cartes/map_' + df_geo_com['id_com'][0] + '.html')
+html_content = read_html_file('cartes/map_' + df_geo_com['id_com'][0] + '.html')
 # Display the HTML content in Streamlit
 map_container = st.container()
      
 with map_container:
-    st.write("Carte:")
-    st.components.v1.html(html_content,height=500)
+    st.components.v1.html(html_content,height=800)
