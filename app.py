@@ -31,6 +31,13 @@ import warnings
 with warnings.catch_warnings():
     warnings.simplefilter("ignore", category=pd.errors.SettingWithCopyWarning)
 
+st.set_page_config(layout="wide")
+
+# Load the HTML file
+def read_html_file(filename):
+    with open(filename, 'r') as f:
+        return f.read()
+
 AIVEN_URL ='avnadmin:AVNS_8Nfkstx4GWwAGOxp7OB@pg-11490ac3-jeancabouat-2aa9.j.aivencloud.com:23133/defaultdb?sslmode=require'
 conn_string = "postgresql://" + AIVEN_URL
 engine = create_engine(conn_string)
@@ -91,27 +98,6 @@ def query(query):
   conn.close()
   return df
 
-# Edition de carte
-def map_generation(df,id,lib,geo):
-  m = folium.Map(location=[48.858885,2.34694], zoom_start=6, tiles="CartoDB positron")
-  df = df[[id,lib,geo]].drop_duplicates()
-
-  for index, row in df.iterrows():
-      sim_geo = gpd.GeoSeries(row[geo]).simplify(tolerance=0.001)
-      geo_j = sim_geo.to_json()
-
-      geo_j = folium.GeoJson(data=geo_j,
-                            style_function = lambda x: {"fillColor": "blue"}
-                            #,highlight_function= lambda feat: {'fillColor': 'red'}
-                            )
-
-      folium.Popup(row[id] + " - " + row[lib]).add_to(geo_j)
-
-      geo_j.add_to(m)
-
-  display(m)
-
-
 
 # ---------- 1️⃣ Load / cache the raw data ----------
 @st.cache_data(show_spinner=False)
@@ -119,22 +105,22 @@ def load_insee_ref() -> pd.DataFrame:
     """Pull the full table once and keep it in Streamlit's cache."""
     df = query("SELECT * FROM insee_ref WHERE id_dep ='78'")  # fetch only the needed cols
     df = df.drop_duplicates()                                   # tiny safety net
-    return df.sort_values(['libReg', 'libDep', 'libCom','id_com'],
+    return df.sort_values(['lib_reg', 'lib_dep', 'lib_com','id_com'],
                           ascending=[True, True, True, True])         # one single sort
 
 def load_geo(nom_commune) -> pd.DataFrame:
     """Pull the full table once and keep it in Streamlit's cache."""
-    query_str = """SELECT * FROM com_geo WHERE "libCom" = '""" + nom_commune + """'"""
+    query_str = """SELECT * FROM com_geo WHERE "lib_com" = '""" + nom_commune + """'"""
     print(query_str)
-    df = query("SELECT * FROM com_geo WHERE """"libCom"""" = '" + nom_commune + "'")  # fetch only the needed cols
+    df = query("SELECT * FROM com_geo WHERE """"lib_com"""" = '" + nom_commune + "'")  # fetch only the needed cols
     df = df.drop_duplicates()                                   # tiny safety net
-    return df.sort_values(['id_com','libCom','geoCom'],
+    return df.sort_values(['id_com','lib_com','geo_com'],
                           ascending=[True, True, True])         # one single sort
 
 df_insee_ref = load_insee_ref()
 
 # ---------- 2️⃣ Build unique, *sorted* option lists ----------
-regions = df_insee_ref['libReg'].unique().tolist()
+regions = df_insee_ref['lib_reg'].unique().tolist()
 
 with st.sidebar:
     st.header("Sélection géographique")
@@ -149,8 +135,8 @@ with st.sidebar:
 
     # ---------- 4️⃣ Department selectbox (filtered) ----------
     # Filter once (no extra sort)
-    filtered_dep = df_insee_ref[df_insee_ref['libReg'] == option_reg]
-    dep_options = filtered_dep['libDep'].unique().tolist()
+    filtered_dep = df_insee_ref[df_insee_ref['lib_reg'] == option_reg]
+    dep_options = filtered_dep['lib_dep'].unique().tolist()
 
     option_dep = st.selectbox(
         "Département:",
@@ -161,8 +147,8 @@ with st.sidebar:
     )
 
     # ---------- 5️⃣ Commune selectbox (filtered) ----------
-    filtered_com = filtered_dep[filtered_dep['libDep'] == option_dep]
-    com_options = filtered_com['libCom'].unique().tolist()
+    filtered_com = filtered_dep[filtered_dep['lib_dep'] == option_dep]
+    com_options = filtered_com['lib_com'].unique().tolist()
 
     option_com = st.selectbox(
         "Commune:",
@@ -171,12 +157,20 @@ with st.sidebar:
         placeholder="Sélectionner une commune",
         key="com_selectbox"
     )
-df_com = filtered_com[filtered_com['libCom'] == option_com]
+df_com = filtered_com[filtered_com['lib_com'] == option_com]
 
-lib_com = df_com['libCom'].values[0]
+lib_com = df_com['lib_com'].values[0]
 df_geo_com = load_geo(lib_com)    
 st.write(f"Vous avez sélectionné la commune de **{option_com}**, dans le département de **{option_dep}**, en région **{option_reg}**.")
 
 print(df_geo_com.head())
-# Affichage de la carte
-#map_generation(df_geo_com,'id_com','libCom','geoCom')
+
+# a.Carte
+#Read the HTML content from the file
+html_content = read_html_file('/cartes/map_' + df_geo_com['id_com'][0] + '.html')
+# Display the HTML content in Streamlit
+map_container = st.container()
+     
+with map_container:
+    st.write("Carte:")
+    st.components.v1.html(html_content,height=500)
