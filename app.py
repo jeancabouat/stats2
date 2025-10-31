@@ -84,24 +84,26 @@ df_insee_ref = load_insee_ref()
 
 # ---------- 2️⃣ Build unique, *sorted* option lists ----------
 regions = df_insee_ref['lib_reg'].unique().tolist()
+default_value = "Île-de-France"
+default_index = regions.index(default_value)
 
 with st.sidebar:
     st.header("Sélection géographique")
     # ---------- 3️⃣ Region selectbox ----------
-    option_reg = st.selectbox(
+    selected_reg = st.selectbox(
         "Région:",
         options=regions,
-        index=0,
+        index=default_index,
         placeholder="Sélectionner une région",
         key="reg_selectbox"
     )
 
     # ---------- 4️⃣ Department selectbox (filtered) ----------
     # Filter once (no extra sort)
-    filtered_dep = df_insee_ref[df_insee_ref['lib_reg'] == option_reg]
+    filtered_dep = df_insee_ref[df_insee_ref['lib_reg'] == selected_reg]
     dep_options = filtered_dep['lib_dep'].unique().tolist()
 
-    option_dep = st.selectbox(
+    selected_dep = st.selectbox(
         "Département:",
         options=dep_options,
         index=0,
@@ -110,22 +112,22 @@ with st.sidebar:
     )
 
     # ---------- 5️⃣ Commune selectbox (filtered) ----------
-    filtered_com = filtered_dep[filtered_dep['lib_dep'] == option_dep]
+    filtered_com = filtered_dep[filtered_dep['lib_dep'] == selected_dep]
     com_options = filtered_com['lib_com'].unique().tolist()
 
-    option_com = st.selectbox(
+    selected_com = st.selectbox(
         "Commune:",
         options=com_options,
         index=0,
         placeholder="Sélectionner une commune",
         key="com_selectbox"
     )
-df_com = filtered_com[filtered_com['lib_com'] == option_com]
+df_com = filtered_com[filtered_com['lib_com'] == selected_com]
 
 lib_com = df_com['lib_com'].values[0]
 id_com = df_com['id_com'].values[0]
 df_geo_com = load_geo(id_com)    
-st.write(f"Vous avez sélectionné la commune de **{option_com}**, dans le département de **{option_dep}**, en région **{option_reg}**.")
+st.write(f"Vous avez sélectionné la commune de **{selected_com}**, dans le département de **{selected_dep}**, en région **{selected_reg}**.")
 
 # a.Carte
 #Read the HTML content from the file
