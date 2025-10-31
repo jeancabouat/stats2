@@ -68,14 +68,14 @@ def query(query):
 @st.cache_data(show_spinner=False)
 def load_insee_ref() -> pd.DataFrame:
     """Pull the full table once and keep it in Streamlit's cache."""
-    df = query("SELECT * FROM insee_ref WHERE id_dep ='78'")  # fetch only the needed cols
+    df = query("SELECT * FROM insee_ref WHERE id_dep in ('43','78','85')")  # fetch only the needed cols
     df = df.drop_duplicates()                                   # tiny safety net
     return df.sort_values(['lib_reg', 'lib_dep', 'lib_com','id_com'],
                           ascending=[True, True, True, True])         # one single sort
 
-def load_geo(nom_commune) -> pd.DataFrame:
+def load_geo(id_commune) -> pd.DataFrame:
     """Pull the full table once and keep it in Streamlit's cache."""
-    df = query("SELECT * FROM com_geo WHERE """"lib_com"""" = '" + nom_commune + "' AND id_dep ='78'")  # fetch only the needed cols
+    df = query("SELECT * FROM com_geo WHERE """"id_com"""" = '" + id_commune  + "'")# fetch only the needed cols
     df = df.drop_duplicates()                                   # tiny safety net
     return df.sort_values(['id_com','lib_com','geo_com'],
                           ascending=[True, True, True])         # one single sort
@@ -123,12 +123,13 @@ with st.sidebar:
 df_com = filtered_com[filtered_com['lib_com'] == option_com]
 
 lib_com = df_com['lib_com'].values[0]
-df_geo_com = load_geo(lib_com)    
+id_com = df_com['id_com'].values[0]
+df_geo_com = load_geo(id_com)    
 st.write(f"Vous avez sélectionné la commune de **{option_com}**, dans le département de **{option_dep}**, en région **{option_reg}**.")
 
 # a.Carte
 #Read the HTML content from the file
-html_content = read_html_file('cartes/map_' + df_geo_com['id_com'][0] + '.html')
+html_content = read_html_file('cartes/map_' + id_com + '.html')
 # Display the HTML content in Streamlit
 map_container = st.container()
      
