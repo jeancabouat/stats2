@@ -31,6 +31,10 @@ import warnings
 with warnings.catch_warnings():
     warnings.simplefilter("ignore", category=pd.errors.SettingWithCopyWarning)
 
+AIVEN_URL ='avnadmin:AVNS_8Nfkstx4GWwAGOxp7OB@pg-11490ac3-jeancabouat-2aa9.j.aivencloud.com:23133/defaultdb?sslmode=require'
+conn_string = "postgresql://" + AIVEN_URL
+engine = create_engine(conn_string)
+
 st.set_page_config(layout="wide")
 
 # Load the HTML file
@@ -38,14 +42,7 @@ def read_html_file(filename):
     with open(filename, 'r') as f:
         return f.read()
 
-AIVEN_URL ='avnadmin:AVNS_8Nfkstx4GWwAGOxp7OB@pg-11490ac3-jeancabouat-2aa9.j.aivencloud.com:23133/defaultdb?sslmode=require'
-conn_string = "postgresql://" + AIVEN_URL
-engine = create_engine(conn_string)
-
-# Assuming 'engine' is already defined elsewhere in your code,
-# for example:
-# engine = create_engine('postgresql://user:password@host:port/database')
-
+# ---------- Function to run SQL queries ----------
 def query(query):
   """
   Executes a SQL query and returns the result as a pandas DataFrame.
@@ -127,13 +124,38 @@ df_com = filtered_com[filtered_com['lib_com'] == selected_com]
 lib_com = df_com['lib_com'].values[0]
 id_com = df_com['id_com'].values[0]
 df_geo_com = load_geo(id_com)    
-st.write(f"Vous avez sélectionné la commune de **{selected_com}**, dans le département de **{selected_dep}**, en région **{selected_reg}**.")
 
 # a.Carte
+st.header("Carte")
+st.write(f"Vous avez sélectionné la commune de **{selected_com}**, dans le département de **{selected_dep}**, en région **{selected_reg}**.")
+
 #Read the HTML content from the file
 html_content = read_html_file('cartes/map_' + id_com + '.html')
 # Display the HTML content in Streamlit
+
 map_container = st.container()
-     
 with map_container:
     st.components.v1.html(html_content,height=800)
+
+# b.Comparateur INSEE
+query_com = "SELECT * FROM insee_comparateur_sample WHERE """"id_com"""" = '" + id_com  + "'"
+print(query_com)
+df_comp = query(query_com)
+st.header("Comparateur INSEE")
+
+st.write(f"Superficie: **{df_comp['SUPERF'].values[0]}** km²")
+df_comp_pop = df_comp[['P22_POP','P16_POP','NAIS1621','DECE1621','P22_MEN','NAISD24','DECESD24']]
+df_comp_log = df_comp[['P22_LOG','P22_RP','P22_RSECOCC','P22_LOGVAC','P22_RP_PROP']]
+df_comp_fisc = df_comp[['NBMENFISC21','PIMP21','MED21','TP6021']]
+df_comp_emp = df_comp[['P22_EMPLT','P22_EMPLT_SAL','P16_EMPLT','P22_POP1564','P22_CHOM1564','P22_ACT1564']]
+df_comp_eco = df_comp[['ETTOT23','ETAZ23','ETBE23','ETFZ23','ETGU23','ETOQ23','ETTEF123','ETTEFP1023']]
+
+st.dataframe(df_comp_pop,use_container_width=False)
+st.dataframe(df_comp_log,use_container_width=False)
+st.dataframe(df_comp_fisc,use_container_width=False)
+st.dataframe(df_comp_emp,use_container_width=False)
+st.dataframe(df_comp_eco,use_container_width=False)
+
+
+# C.Evolution du vote
+st.header("Evolution du vote")
