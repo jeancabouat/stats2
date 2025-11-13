@@ -128,7 +128,7 @@ id_cir = df_com['id_cir'].values[0]
 df_geo_com = load_geo(id_com)    
 
 # a.Carte
-st.header("Carte")
+#st.header("Carte")
 st.write(f"Vous avez sélectionné la commune de **{selected_com}**, dans le département de **{selected_dep}**, en région **{selected_reg}**.")
 
 #Read the HTML content from the file
@@ -216,19 +216,21 @@ with tab5:
 # C.Evolution du vote
 st.header("Evolution du vote")
 
-#Read the HTML content from the file - SK diagram - COM
-html_content_sk_com = read_html_file('diag_sk/' + id_dep + '/com/' + 'com_sankey_' + id_dep + '_' + id_com + '.html')
-# Display the HTML content in Streamlit
-sk_com_container = st.container()
-with sk_com_container:
-    st.components.v1.html(html_content_sk_com,height=400)
+col1, col2 = st.columns(2)
 
-#Read the HTML content from the file - SK diagram - CIR
-html_content_sk_cir = read_html_file('diag_sk/' + id_dep + '/cir/' + 'cir_sankey_' + id_dep + '_' + id_cir + '.html')
-# Display the HTML content in Streamlit
-sk_cir_container = st.container()
-with sk_cir_container:
-    st.components.v1.html(html_content_sk_cir,height=400)
-
+with col1:
+    #Read the HTML content from the file - SK diagram - COM
+    html_content_sk_com = read_html_file('diag_sk/' + id_dep + '/com/' + 'com_sankey_' + id_dep + '_' + id_com + '.html')
+    # Display the HTML content in Streamlit
+    sk_com_container = st.container()
+    with sk_com_container:
+        st.components.v1.html(html_content_sk_com,height=400)
+with col2:
+    #Read the HTML content from the file - SK diagram - CIR
+    html_content_sk_cir = read_html_file('diag_sk/' + id_dep + '/cir/' + 'cir_sankey_' + id_dep + '_' + id_cir + '.html')
+    # Display the HTML content in Streamlit
+    sk_cir_container = st.container()
+    with sk_cir_container:
+        st.components.v1.html(html_content_sk_cir,height=400)
 
 # End of file
