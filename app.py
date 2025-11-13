@@ -72,7 +72,7 @@ def load_insee_ref() -> pd.DataFrame:
 
 def load_geo(id_commune) -> pd.DataFrame:
     """Pull the full table once and keep it in Streamlit's cache."""
-    df = query("SELECT * FROM com_geo WHERE """"id_com"""" = '" + id_commune  + "'")# fetch only the needed cols
+    df = query("SELECT * FROM com_geo_sample WHERE """"id_com"""" = '" + id_commune  + "'")# fetch only the needed cols
     df = df.drop_duplicates()                                   # tiny safety net
     return df.sort_values(['id_com','lib_com','geo_com'],
                           ascending=[True, True, True])         # one single sort
@@ -213,3 +213,12 @@ with tab5:
 
 # C.Evolution du vote
 st.header("Evolution du vote")
+
+#Read the HTML content from the file
+html_content_sk = read_html_file('cartes/map_' + id_com + '.html')
+# Display the HTML content in Streamlit
+
+sk_container = st.container()
+with map_container:
+    st.components.v1.html(html_content_sk,height=800)
+# End of file
