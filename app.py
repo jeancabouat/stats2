@@ -67,9 +67,9 @@ def load_insee_ref() -> pd.DataFrame:
     """Pull the full table once and keep it in Streamlit's cache."""
     df = query("SELECT * FROM insee_ref WHERE id_dep in ('43','78','85')")  # fetch only the needed cols
     df = df.drop_duplicates()                                   # tiny safety net
-    return df.sort_values(['lib_reg', 'lib_dep', 'lib_com','id_com'],
-                          ascending=[True, True, True, True])         # one single sort
-
+    return df.sort_values(['lib_reg', 'lib_dep', 'lib_com','id_com','id_cir'],
+                          ascending=[True, True, True, True, True])         # one single sort
+@st.cache_data(show_spinner=False)
 def load_geo(id_commune) -> pd.DataFrame:
     """Pull the full table once and keep it in Streamlit's cache."""
     df = query("SELECT * FROM com_geo_sample WHERE """"id_com"""" = '" + id_commune  + "'")# fetch only the needed cols
@@ -121,8 +121,10 @@ with st.sidebar:
     )
 df_com = filtered_com[filtered_com['lib_com'] == selected_com]
 
+id_dep = df_com['id_dep'].values[0]
 lib_com = df_com['lib_com'].values[0]
 id_com = df_com['id_com'].values[0]
+id_cir = df_com['id_cir'].values[0]
 df_geo_com = load_geo(id_com)    
 
 # a.Carte
@@ -214,11 +216,19 @@ with tab5:
 # C.Evolution du vote
 st.header("Evolution du vote")
 
-#Read the HTML content from the file
-html_content_sk = read_html_file('cartes/map_' + id_com + '.html')
+#Read the HTML content from the file - SK diagram - COM
+html_content_sk_com = read_html_file('diag_sk/' + id_dep + '/com/' + 'com_sankey_' + id_dep + '_' + id_com + '.html')
 # Display the HTML content in Streamlit
+sk_com_container = st.container()
+with sk_com_container:
+    st.components.v1.html(html_content_sk_com,height=400)
 
-sk_container = st.container()
-with map_container:
-    st.components.v1.html(html_content_sk,height=800)
+#Read the HTML content from the file - SK diagram - CIR
+html_content_sk_cir = read_html_file('diag_sk/' + id_dep + '/cir/' + 'cir_sankey_' + id_dep + '_' + id_cir + '.html')
+# Display the HTML content in Streamlit
+sk_cir_container = st.container()
+with sk_cir_container:
+    st.components.v1.html(html_content_sk_cir,height=400)
+
+
 # End of file
