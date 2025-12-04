@@ -132,7 +132,7 @@ df_geo_com = load_geo(id_com)
 st.write(f"Vous avez sélectionné la commune de **{selected_com}**, dans le département de **{selected_dep}**, en région **{selected_reg}**.")
 
 #Read the HTML content from the file
-html_content = read_html_file('cartes/map_' + id_com + '.html')
+html_content = read_html_file('cartes/' + id_dep + '/map_' + id_com + '.html')
 # Display the HTML content in Streamlit
 
 map_container = st.container()
@@ -232,5 +232,14 @@ with col2:
     sk_cir_container = st.container()
     with sk_cir_container:
         st.components.v1.html(html_content_sk_cir,height=400)
+
+
+#Read the HTML content from the file - network
+html_content_nt = read_html_file('ntwk/network_' + id_dep + '.html')
+# Display the HTML content in Streamlit
+nt_container = st.container()
+with nt_container:
+    st.components.v1.html(html_content_nt,height=650)
+
 
 # End of file
