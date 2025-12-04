@@ -132,12 +132,12 @@ df_geo_com = load_geo(id_com)
 st.write(f"Vous avez sélectionné la commune de **{selected_com}**, dans le département de **{selected_dep}**, en région **{selected_reg}**.")
 
 #Read the HTML content from the file
-html_content = read_html_file('cartes/' + id_dep + '/map_' + id_com + '.html')
+html_content_map = read_html_file('cartes/' + id_dep + '/map_' + id_com + '.html')
 # Display the HTML content in Streamlit
 
 map_container = st.container()
 with map_container:
-    st.components.v1.html(html_content,height=800)
+    st.components.v1.html(html_content_map,height=800)
 
 # b.Comparateur INSEE
 query_com = "SELECT * FROM insee_comparateur_sample WHERE """"id_com"""" = '" + id_com  + "'"
@@ -240,6 +240,16 @@ html_content_nt = read_html_file('ntwk/network_' + id_dep + '.html')
 nt_container = st.container()
 with nt_container:
     st.components.v1.html(html_content_nt,height=650)
+
+
+
+#Read the HTML content from the file
+html_content_map_cluster = read_html_file('cartes/' + id_dep + '/map_clusters_' + id_com + '.html')
+# Display the HTML content in Streamlit
+
+map_cluster_container = st.container()
+with map_cluster_container:
+    st.components.v1.html(html_content_map_cluster,height=800)
 
 
 # End of file
