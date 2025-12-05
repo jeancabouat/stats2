@@ -167,39 +167,17 @@ with col2:
         st.dataframe(df_comp_logt.T.rename(index={'P22_LOG': 'NB logements 2022','P22_RP': 'Nb rés.pal. 2022','P22_RSECOCC': 'Nb rés.sec et occas. 2022','P22_LOGVAC': 'Nb logements vacants 2022'}),
                      column_config={'0': ''},width="stretch")
     with tab3:
-        st.dataframe(df_comp_fisc.T,
-                 column_config={
-                'NBMENFISC21': 'Nb foyers fisc. 2022',
-                'PIMP21': 'Part des foyers fisc. imposés 2021',
-                'MED21': 'Médiane du niveau de vie 2021',
-                'TP6021': 'Tx de pauvreté 2021'},
-                 width="stretch")
-    
+        st.dataframe(df_comp_fisc.T.rename(index={'NBMENFISC21': 'Nb foyers fisc. 2022','PIMP21': 'Part des foyers fisc. imposés 2021','MED21': 'Médiane du niveau de vie 2021', 'TP6021': 'Tx de pauvreté 2021'}),
+                     column_config={'0': ''},width="stretch")   
     with tab4:
-        st.dataframe(df_comp_emp.T,
-                 column_config={
-                'P22_EMPLT': 'Nb emplois 2022',
-                'P22_EMPLT_SAL': 'Nb emplois salariés 2022',
-                'P16_EMPLT': 'Nb emplos 2016',
-                'P22_POP1564': 'Nb pers. 15-64 ans 2022',
-                'P22_CHOM1564': 'Nb chômeurs 15-64 ans 2022',
-                'P22_ACT1564': 'Nb pers. actives 15-64 ans 2022'
-                 },
-                 width="stretch")      
-    
+        st.dataframe(df_comp_emp.T.rename(index={'P22_EMPLT': 'Nb emplois 2022','P16_POP': 'Pop. 2016','P16_EMPLT': 'Nb emplos 2016',
+                                                 'P22_POP1564': 'Nb pers. 15-64 ans 2022','P22_CHOM1564': 'Nb chômeurs 15-64 ans 2022','P22_ACT1564': 'Nb pers. actives 15-64 ans 2022'}),
+                     column_config={'0': ''},width="stretch")    
     with tab5:
-        st.dataframe(df_comp_eco.T,
-                column_config={
-                'ETTOT23': 'Nb établissements 2023',
-                'ETAZ23': 'Nb étab. agri.sylvi.pêche 2023',
-                'ETBE23': 'Nb étab. industriels 2023',
-                'ETFZ23': 'Nb étab. construction 2023',
-                'ETGU23': 'Nb étab. comm. transports services fin. 2023',
-                'ETOQ23': 'Nb étab.publ. enseignement santé/social',
-                'ETTEF123': 'Nb étab. 1-9 salariés 2023',
-                'ETTEFP1023': 'Nb étab. +10 salariés 2023'
-                },
-                 width="stretch")
+        st.dataframe(df_comp_emp.T.rename(index={'ETTOT23': 'Nb établissements 2023','ETAZ23': 'Nb étab. agri.sylvi.pêche 2023','ETBE23': 'Nb étab. industriels 2023',
+                                                 'ETFZ23': 'Nb étab. construction 2023','ETGU23': 'Nb étab. comm. transports services fin. 2023','ETOQ23': 'Nb étab.publ. enseignement santé/social',
+                                                 'ETTEF123': 'Nb étab. 1-9 salariés 2023','ETTEFP1023': 'Nb étab. +10 salariés 2023'}),
+                     column_config={'0': ''},width="stretch")
     
 # c.Analyses
 st.header("Analyses")
