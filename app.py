@@ -170,7 +170,7 @@ with col2:
            'DECESD24': 'NB décès 2024'}
 ),
                  column_config={
-                '0': '},
+                '0': ''},
                 width="stretch")
     with tab2:
         st.dataframe(df_comp_logt.T,
