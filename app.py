@@ -257,7 +257,7 @@ with st.expander("Modélisation"):
             st.components.v1.html(html_content_map_cluster,height=800)
 
     with col2_mod:
-        st.dataframe(table_pivot.fillna(0).round(0).astype(int),
+        st.dataframe(table_pivot.fillna(0).round(0).astype(int),height="content",
                     column_config={
                     'cluster': 'Cluster',
                     'parti': 'Parti politique',
@@ -265,7 +265,7 @@ with st.expander("Modélisation"):
                     'lib_parti_leg1': 'Elections leg. - 1er tour',
                     'lib_parti_leg2': 'Elections leg. - 2ème tour',
                      },
-                     use_container_width=True,hide_index=False)
+                     width="stretch",hide_index=False)
 
         
     query_com_centr = "SELECT * FROM data_model_output_centroid WHERE """"dep"""" = '" + id_dep  + "' ORDER BY cluster_dep"
