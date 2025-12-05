@@ -174,7 +174,7 @@ with col2:
                                                  'P22_POP1564': 'Nb pers. 15-64 ans 2022','P22_CHOM1564': 'Nb chômeurs 15-64 ans 2022','P22_ACT1564': 'Nb pers. actives 15-64 ans 2022'}),
                      column_config={'0': ''},width="stretch")    
     with tab5:
-        st.dataframe(df_comp_emp.T.rename(index={'ETTOT23': 'Nb établissements 2023','ETAZ23': 'Nb étab. agri.sylvi.pêche 2023','ETBE23': 'Nb étab. industriels 2023',
+        st.dataframe(df_comp_eco.T.rename(index={'ETTOT23': 'Nb établissements 2023','ETAZ23': 'Nb étab. agri.sylvi.pêche 2023','ETBE23': 'Nb étab. industriels 2023',
                                                  'ETFZ23': 'Nb étab. construction 2023','ETGU23': 'Nb étab. comm. transports services fin. 2023','ETOQ23': 'Nb étab.publ. enseignement santé/social',
                                                  'ETTEF123': 'Nb étab. 1-9 salariés 2023','ETTEFP1023': 'Nb étab. +10 salariés 2023'}),
                      column_config={'0': ''},width="stretch")
