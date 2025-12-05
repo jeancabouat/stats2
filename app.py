@@ -126,7 +126,6 @@ id_cir = df_com['id_cir'].values[0]
 df_geo_com = load_geo(id_com)    
 
 # a.Carte
-#st.header("Carte")
 st.write(f"Vous avez sélectionné la commune de **{selected_com}**, dans le département de **{selected_dep}**, en région **{selected_reg}**.")
 
 col1, col2 = st.columns(2)
@@ -180,7 +179,7 @@ with col2:
                      column_config={'0': ''},width="stretch")
     
 # c.Analyses
-st.header("Analyses")
+st.subheader("Analyse", divider="grey")
 
 with st.expander("Evolution du vote",expanded=True):
     col1, col2 = st.columns(2)
@@ -243,8 +242,7 @@ with st.expander("Modélisation",expanded=True):
     numeric_cols = df_comp_centr.select_dtypes(include='number').columns.tolist()
     df_comp_centr[numeric_cols] = df_comp_centr[numeric_cols].round(0).astype(int)
 
-    st.header("Comparateur INSEE - Centroids")
-
+    st.subheader("Comparateur INSEE - Centroids")
     df_comp_centr_pop = df_comp_centr[['cluster_dep','P22_POP','P16_POP','NAIS1621','DECE1621','P22_MEN','NAISD24','DECESD24']]
     df_comp_centr_logt = df_comp_centr[['cluster_dep','P22_LOG','P22_RP','P22_RSECOCC','P22_LOGVAC']]
     df_comp_centr_fisc = df_comp_centr[['cluster_dep','NBMENFISC21','PIMP21','MED21','TP6021']]
@@ -254,63 +252,23 @@ with st.expander("Modélisation",expanded=True):
     tab1_centr, tab2_centr, tab3_centr, tab4_centr, tab5_centr = st.tabs(["👨‍👩‍👧‍👦 Population", "🏠 Logement", "📤Fiscalité", "🏭 Emploi", "💶 Économie"])
 
     with tab1_centr:
-        st.dataframe(df_comp_centr_pop,
-                column_config={
-                'cluster_dep': 'cluster',
-                'P22_POP': 'Pop. 2022',
-                'P16_POP': 'Pop. 2016',
-                'NAIS1621': 'Nb naissances 2016-2021',
-                'DECE1621': 'NB décès 2016-2021',
-                'P22_MEN': 'NB ménages 2022',
-                'NAISD24': 'NB naissances 2024',
-                'DECESD24': 'NB décès 2024'},
-                use_container_width=False,hide_index=True)
+        st.dataframe(df_comp_centr_pop.T.rename(index={'P22_POP': 'Pop. 2022','P16_POP': 'Pop. 2016','NAIS1621': 'Nb naissances 2016-2021','DECE1621': 'NB décès 2016-2021',
+                                                 'P22_MEN': 'NB ménages 2022','NAISD24': 'NB naissances 2024','DECESD24': 'NB décès 2024'}),
+                     column_config={'0': ''},width="stretch")
     with tab2_centr:
-        st.dataframe(df_comp_centr_logt,
-                column_config={
-                'cluster_dep': 'cluster',
-                'P22_LOG': 'NB logements 2022',
-                'P22_RP': 'Nb rés.pal. 2022',
-                'P22_RSECOCC': 'Nb rés.sec et occas. 2022',
-                'P22_LOGVAC': 'Nb logements vacants 2022'},
-                use_container_width=False,hide_index=True)
+        st.dataframe(df_comp_centr_logt.T.rename(index={'P22_LOG': 'NB logements 2022','P22_RP': 'Nb rés.pal. 2022','P22_RSECOCC': 'Nb rés.sec et occas. 2022','P22_LOGVAC': 'Nb logements vacants 2022'}),
+                     column_config={'0': ''},width="stretch")
     with tab3_centr:
-        st.dataframe(df_comp_centr_fisc,
-                column_config={
-                'cluster_dep': 'cluster',
-                'NBMENFISC21': 'Nb foyers fisc. 2022',
-                'PIMP21': 'Part des foyers fisc. imposés 2021',
-                'MED21': 'Médiane du niveau de vie 2021',
-                'TP6021': 'Tx de pauvreté 2021'},
-                use_container_width=False,hide_index=True)
-
+        st.dataframe(df_comp_centr_fisc.T.rename(index={'NBMENFISC21': 'Nb foyers fisc. 2022','PIMP21': 'Part des foyers fisc. imposés 2021','MED21': 'Médiane du niveau de vie 2021', 'TP6021': 'Tx de pauvreté 2021'}),
+                     column_config={'0': ''},width="stretch")   
     with tab4_centr:
-        st.dataframe(df_comp_centr_emp,
-                column_config={
-                'cluster_dep': 'cluster',
-                'P22_EMPLT': 'Nb emplois 2022',
-                'P22_EMPLT_SAL': 'Nb emplois salariés 2022',
-                'P16_EMPLT': 'Nb emplos 2016',
-                'P22_POP1564': 'Nb pers. 15-64 ans 2022',
-                'P22_CHOM1564': 'Nb chômeurs 15-64 ans 2022',
-                'P22_ACT1564': 'Nb pers. actives 15-64 ans 2022'
-                },
-                use_container_width=False,hide_index=True)      
-
+        st.dataframe(df_comp_centr_emp.T.rename(index={'P22_EMPLT': 'Nb emplois 2022','P16_POP': 'Pop. 2016','P16_EMPLT': 'Nb emplos 2016',
+                                                 'P22_POP1564': 'Nb pers. 15-64 ans 2022','P22_CHOM1564': 'Nb chômeurs 15-64 ans 2022','P22_ACT1564': 'Nb pers. actives 15-64 ans 2022'}),
+                     column_config={'0': ''},width="stretch")    
     with tab5_centr:
-        st.dataframe(df_comp_centr_eco,
-                column_config={
-                'cluster_dep': 'cluster',
-                'ETTOT23': 'Nb établissements 2023',
-                'ETAZ23': 'Nb étab. agri.sylvi.pêche 2023',
-                'ETBE23': 'Nb étab. industriels 2023',
-                'ETFZ23': 'Nb étab. construction 2023',
-                'ETGU23': 'Nb étab. comm. transports services fin. 2023',
-                'ETOQ23': 'Nb étab.publ. enseignement santé/social',
-                'ETTEF123': 'Nb étab. 1-9 salariés 2023',
-                'ETTEFP1023': 'Nb étab. +10 salariés 2023'
-                },
-                use_container_width=False,hide_index=True)
-
+        st.dataframe(df_comp_centr_eco.T.rename(index={'ETTOT23': 'Nb établissements 2023','ETAZ23': 'Nb étab. agri.sylvi.pêche 2023','ETBE23': 'Nb étab. industriels 2023',
+                                                 'ETFZ23': 'Nb étab. construction 2023','ETGU23': 'Nb étab. comm. transports services fin. 2023','ETOQ23': 'Nb étab.publ. enseignement santé/social',
+                                                 'ETTEF123': 'Nb étab. 1-9 salariés 2023','ETTEFP1023': 'Nb étab. +10 salariés 2023'}),
+                     column_config={'0': ''},width="stretch")
 
 # End of file
