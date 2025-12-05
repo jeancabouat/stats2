@@ -264,7 +264,7 @@ with st.expander("Modélisation"):
                     'lib_parti_leg1': 'Elections leg. - 1er tour',
                     'lib_parti_leg2': 'Elections leg. - 2ème tour',
                      },
-                     use_container_width=False,hide_index=False)
+                     use_container_width=True,hide_index=False)
 
         
     query_com_centr = "SELECT * FROM data_model_output_centroid WHERE """"dep"""" = '" + id_dep  + "' ORDER BY cluster_dep"
