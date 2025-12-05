@@ -171,7 +171,7 @@ with col2:
                 'P22_MEN': 'NB ménages 2022',
                 'NAISD24': 'NB naissances 2024',
                 'DECESD24': 'NB décès 2024'},
-                use_container_width=False,hide_index=True)
+                width="stretch")
     with tab2:
         st.dataframe(df_comp_logt.T,
                  column_config={
@@ -179,7 +179,7 @@ with col2:
                 'P22_RP': 'Nb rés.pal. 2022',
                 'P22_RSECOCC': 'Nb rés.sec et occas. 2022',
                 'P22_LOGVAC': 'Nb logements vacants 2022'},
-                 use_container_width=False,hide_index=True)
+                 width="stretch")
     with tab3:
         st.dataframe(df_comp_fisc.T,
                  column_config={
@@ -187,7 +187,7 @@ with col2:
                 'PIMP21': 'Part des foyers fisc. imposés 2021',
                 'MED21': 'Médiane du niveau de vie 2021',
                 'TP6021': 'Tx de pauvreté 2021'},
-                 use_container_width=False,hide_index=True)
+                 width="stretch")
     
     with tab4:
         st.dataframe(df_comp_emp.T,
@@ -199,7 +199,7 @@ with col2:
                 'P22_CHOM1564': 'Nb chômeurs 15-64 ans 2022',
                 'P22_ACT1564': 'Nb pers. actives 15-64 ans 2022'
                  },
-                 use_container_width=False,hide_index=True)      
+                 width="stretch")      
     
     with tab5:
         st.dataframe(df_comp_eco.T,
@@ -213,7 +213,7 @@ with col2:
                 'ETTEF123': 'Nb étab. 1-9 salariés 2023',
                 'ETTEFP1023': 'Nb étab. +10 salariés 2023'
                 },
-                 use_container_width=False,hide_index=True)
+                 width="stretch")
     
 # c.Analyses
 st.header("Analyses")
