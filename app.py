@@ -130,7 +130,6 @@ st.subheader(f"Vous avez sélectionné la commune de **{selected_com}**, dans le
 
 st.markdown(f"Vous avez sélectionné la commune de **{selected_com}**, dans le département de **{selected_dep}**, en région **{selected_reg}**.")
 
-st.text_area(,f"Vous avez sélectionné la commune de {selected_com}, dans le département de {selected_dep}, en région {selected_reg}.")
 
 # a.Carte
 col1, col2 = st.columns(2)
