@@ -131,7 +131,7 @@ st.write(f"Vous avez sélectionné la commune de **{selected_com}**, dans le dé
 
 col1, col2 = st.columns(2)
 with col1:
-    st.subheader("Carte", divider=True)
+    st.subheader("Carte", divider="blue")
     #Read the HTML content from the file
     html_content_map = read_html_file('cartes/' + id_dep + '/map_' + id_com + '.html')
     # Display the HTML content in Streamlit
@@ -149,7 +149,7 @@ numeric_cols.remove('id_reg')
 df_comp[numeric_cols] = df_comp[numeric_cols].round(0).astype(int)
 
 with col2:
-    st.subheader("Comparateur INSEE", divider=True)
+    st.subheader("Comparateur INSEE", divider="red")
     st.write(f"Superficie: **{df_comp['SUPERF'].values[0]}** km²")
     df_comp_pop = df_comp[['P22_POP','P16_POP','NAIS1621','DECE1621','P22_MEN','NAISD24','DECESD24']]
     df_comp_logt = df_comp[['P22_LOG','P22_RP','P22_RSECOCC','P22_LOGVAC']]
