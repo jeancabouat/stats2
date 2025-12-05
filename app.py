@@ -150,7 +150,7 @@ numeric_cols.remove('id_reg')
 df_comp[numeric_cols] = df_comp[numeric_cols].round(0).astype(int)
 
 with col2:
-    st.header("Comparateur INSEE")
+    st.button("Comparateur INSEE")
     st.write(f"Superficie: **{df_comp['SUPERF'].values[0]}** km²")
     df_comp_pop = df_comp[['P22_POP','P16_POP','NAIS1621','DECE1621','P22_MEN','NAISD24','DECESD24']]
     df_comp_logt = df_comp[['P22_LOG','P22_RP','P22_RSECOCC','P22_LOGVAC']]
