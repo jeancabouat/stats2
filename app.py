@@ -212,9 +212,10 @@ with tab5:
             },
              use_container_width=False,hide_index=True)
 
-# c.Evolution du vote
+# c.Analyses
 st.header("Analyses")
-with st.expander("Evolution du vote"):
+
+with st.expander("Evolution du vote",expanded=True):
     col1, col2 = st.columns(2)
     with col1:
         #Read the HTML content from the file - SK diagram - COM
@@ -246,8 +247,7 @@ formatter = {col: lambda x: '' if x == 0 else f'{int(x)}' for col in table_pivot
 styled_df = table_pivot.style.format(formatter)
 
 
-with st.expander("Modélisation"):
-
+with st.expander("Modélisation",expanded=True):
     col1_mod, col2_mod= st.columns(2)
     with col1_mod:
         #Read the HTML content from the file
