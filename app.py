@@ -1,4 +1,3 @@
-
 #streamlit run /workspaces/stats2/app.py
 
 from io import StringIO
@@ -143,7 +142,6 @@ with col1:
 
 # b.Comparateur INSEE
 query_com = "SELECT * FROM insee_comparateur_sample WHERE """"id_com"""" = '" + id_com  + "'"
-print(query_com)
 df_comp = query(query_com)
 
 numeric_cols = df_comp.select_dtypes(include='number').columns.tolist()
@@ -162,15 +160,17 @@ with col2:
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["👨‍👩‍👧‍👦 Population", "🏠 Logement", "📤Fiscalité", "🏭 Emploi", "💶 Économie"])
     
     with tab1:
-        st.dataframe(df_comp_pop.T,
+        st.dataframe(df_comp_pop.T.rename(
+    index={'P22_POP': 'Pop. 2022',
+           'P16_POP': 'Pop. 2016',
+           'NAIS1621': 'Nb naissances 2016-2021',
+           'DECE1621': 'NB décès 2016-2021',
+           'P22_MEN': 'NB ménages 2022',
+           'NAISD24': 'NB naissances 2024',
+           'DECESD24': 'NB décès 2024'}
+),
                  column_config={
-                'P22_POP': 'Pop. 2022',
-                'P16_POP': 'Pop. 2016',
-                'NAIS1621': 'Nb naissances 2016-2021',
-                'DECE1621': 'NB décès 2016-2021',
-                'P22_MEN': 'NB ménages 2022',
-                'NAISD24': 'NB naissances 2024',
-                'DECESD24': 'NB décès 2024'},
+                '0': '},
                 width="stretch")
     with tab2:
         st.dataframe(df_comp_logt.T,
