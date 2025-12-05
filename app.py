@@ -241,7 +241,7 @@ with st.expander("Evolution du vote"):
 
 query_mod_minint = "SELECT * FROM data_model_output_minint_tr WHERE """"id_dep"""" = '" + id_dep  + "'"
 df_mod_minint = query(query_mod_minint)
-table_pivot = pd.pivot_table(df_mod_minint, values='cluster_dep', index=['cluster','parti'], columns=['election_type'], aggfunc='count').round(0).astype(int)
+table_pivot = pd.pivot_table(df_mod_minint, values='cluster_dep', index=['cluster','parti'], columns=['election_type'], aggfunc='count')
 
 
 with st.expander("Modélisation"):
@@ -257,7 +257,7 @@ with st.expander("Modélisation"):
             st.components.v1.html(html_content_map_cluster,height=800)
 
     with col2_mod:
-        st.dataframe(table_pivot.fillna(''),
+        st.dataframe(table_pivot.fillna('').round(0).astype(int),
                     column_config={
                     'cluster': 'Cluster',
                     'parti': 'Parti politique',
