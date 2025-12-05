@@ -132,6 +132,7 @@ st.write(f"Vous avez sélectionné la commune de **{selected_com}**, dans le dé
 
 col1, col2 = st.columns(2)
 with col1:
+    st.button("Carte")
     #Read the HTML content from the file
     html_content_map = read_html_file('cartes/' + id_dep + '/map_' + id_com + '.html')
     # Display the HTML content in Streamlit
