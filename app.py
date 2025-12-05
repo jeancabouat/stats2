@@ -254,21 +254,21 @@ with st.expander("Modélisation",expanded=True):
     with tab1_centr:
         st.dataframe(df_comp_centr_pop.T.rename(index={'P22_POP': 'Pop. 2022','P16_POP': 'Pop. 2016','NAIS1621': 'Nb naissances 2016-2021','DECE1621': 'NB décès 2016-2021',
                                                  'P22_MEN': 'NB ménages 2022','NAISD24': 'NB naissances 2024','DECESD24': 'NB décès 2024'}),
-                     column_config={'0': ''},width="stretch")
+                     column_config={'0': '', '1': '', '2': '', '3': ''},width="stretch")
     with tab2_centr:
         st.dataframe(df_comp_centr_logt.T.rename(index={'P22_LOG': 'NB logements 2022','P22_RP': 'Nb rés.pal. 2022','P22_RSECOCC': 'Nb rés.sec et occas. 2022','P22_LOGVAC': 'Nb logements vacants 2022'}),
-                     column_config={'0': ''},width="stretch")
+                     column_config={'0': '', '1': '', '2': '', '3': ''},width="stretch")
     with tab3_centr:
         st.dataframe(df_comp_centr_fisc.T.rename(index={'NBMENFISC21': 'Nb foyers fisc. 2022','PIMP21': 'Part des foyers fisc. imposés 2021','MED21': 'Médiane du niveau de vie 2021', 'TP6021': 'Tx de pauvreté 2021'}),
-                     column_config={'0': ''},width="stretch")   
+                     column_config={'0': '', '1': '', '2': '', '3': ''},width="stretch")   
     with tab4_centr:
         st.dataframe(df_comp_centr_emp.T.rename(index={'P22_EMPLT': 'Nb emplois 2022','P16_POP': 'Pop. 2016','P16_EMPLT': 'Nb emplos 2016',
                                                  'P22_POP1564': 'Nb pers. 15-64 ans 2022','P22_CHOM1564': 'Nb chômeurs 15-64 ans 2022','P22_ACT1564': 'Nb pers. actives 15-64 ans 2022'}),
-                     column_config={'0': ''},width="stretch")    
+                     column_config={'0': '', '1': '', '2': '', '3': ''},width="stretch")    
     with tab5_centr:
         st.dataframe(df_comp_centr_eco.T.rename(index={'ETTOT23': 'Nb établissements 2023','ETAZ23': 'Nb étab. agri.sylvi.pêche 2023','ETBE23': 'Nb étab. industriels 2023',
                                                  'ETFZ23': 'Nb étab. construction 2023','ETGU23': 'Nb étab. comm. transports services fin. 2023','ETOQ23': 'Nb étab.publ. enseignement santé/social',
                                                  'ETTEF123': 'Nb étab. 1-9 salariés 2023','ETTEFP1023': 'Nb étab. +10 salariés 2023'}),
-                     column_config={'0': ''},width="stretch")
+                     column_config={'0': '', '1': '', '2': '', '3': ''},width="stretch")
 
 # End of file
