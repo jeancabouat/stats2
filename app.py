@@ -257,7 +257,7 @@ with st.expander("Modélisation"):
             st.components.v1.html(html_content_map_cluster,height=800)
 
     with col2_mod:
-        st.dataframe(table_pivot.fillna('').round(0).astype(int),
+        st.dataframe(table_pivot.fillna(0).round(0).astype(int),
                     column_config={
                     'cluster': 'Cluster',
                     'parti': 'Parti politique',
