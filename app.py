@@ -212,9 +212,10 @@ with tab5:
             },
              use_container_width=False,hide_index=True)
 
-# c.Evolution du vote
+# c.Analyses
 st.header("Analyses")
-with st.expander("Evolution du vote"):
+
+with st.expander("Evolution du vote",expanded=True):
     col1, col2 = st.columns(2)
     with col1:
         #Read the HTML content from the file - SK diagram - COM
@@ -241,10 +242,12 @@ with st.expander("Evolution du vote"):
 
 query_mod_minint = "SELECT * FROM data_model_output_minint_tr WHERE """"id_dep"""" = '" + id_dep  + "'"
 df_mod_minint = query(query_mod_minint)
-table_pivot = pd.pivot_table(df_mod_minint, values='cluster_dep', index=['cluster','parti'], columns=['election_type'], aggfunc='count')
+table_pivot = pd.pivot_table(df_mod_minint, values='cluster_dep', index=['cluster','parti'], columns=['election_type'], aggfunc='count').fillna(0).round(0).astype(int)
+formatter = {col: lambda x: '' if x == 0 else f'{int(x)}' for col in table_pivot.columns}
+styled_df = table_pivot.style.format(formatter)
 
-with st.expander("Modélisation"):
 
+with st.expander("Modélisation",expanded=True):
     col1_mod, col2_mod= st.columns(2)
     with col1_mod:
         #Read the HTML content from the file
@@ -256,9 +259,17 @@ with st.expander("Modélisation"):
             st.components.v1.html(html_content_map_cluster,height=800)
 
     with col2_mod:
-        st.dataframe(table_pivot.fillna(''), use_container_width=True)
+        st.dataframe(styled_df,height="content",
+                    column_config={
+                    'cluster': 'Cluster',
+                    'parti': 'Parti politique',
+                    'lib_parti_eur': 'Elections eur.',
+                    'lib_parti_leg1': 'Elections leg. - 1er tour',
+                    'lib_parti_leg2': 'Elections leg. - 2ème tour',
+                     },
+                     width="stretch",hide_index=False)
 
-
+        
     query_com_centr = "SELECT * FROM data_model_output_centroid WHERE """"dep"""" = '" + id_dep  + "' ORDER BY cluster_dep"
     df_comp_centr = query(query_com_centr)
 
