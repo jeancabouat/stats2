@@ -242,11 +242,9 @@ with st.expander("Evolution du vote"):
 query_mod_minint = "SELECT * FROM data_model_output_minint_tr WHERE """"id_dep"""" = '" + id_dep  + "'"
 df_mod_minint = query(query_mod_minint)
 table_pivot = pd.pivot_table(df_mod_minint, values='cluster_dep', index=['cluster','parti'], columns=['election_type'], aggfunc='count')
-styled_df = table_pivot.style.applymap(
-    hide_zeros, 
-    # Ensure styling only happens on the numerical columns
-    subset=pd.IndexSlice[:, columns_to_style]
-)
+formatter = {col: lambda x: '' if x == 0 else f'{int(x)}' for col in table_pivot.columns}
+styled_df = table_pivot.style.format(formatter)
+
 
 with st.expander("Modélisation"):
 
