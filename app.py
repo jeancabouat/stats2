@@ -260,9 +260,9 @@ with st.expander("Modélisation"):
                     column_config={
                     'cluster': 'Cluster',
                     'parti': 'Parti politique',
-                    'lib_part_eur': 'Elections européennes',
-                    'lib_part_leg1': 'Elections leg. - 1er tour',
-                    'lib_part_leg2': 'Elections leg. - 2ème tour',
+                    'lib_parti_eur': 'Elections européennes',
+                    'lib_parti_leg1': 'Elections leg. - 1er tour',
+                    'lib_parti_leg2': 'Elections leg. - 2ème tour',
                      },
                      use_container_width=False,hide_index=False)
 
