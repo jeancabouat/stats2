@@ -162,7 +162,7 @@ with col2:
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["👨‍👩‍👧‍👦 Population", "🏠 Logement", "📤Fiscalité", "🏭 Emploi", "💶 Économie"])
     
     with tab1:
-        st.dataframe(df_comp_pop,
+        st.dataframe(df_comp_pop.T,
                  column_config={
                 'P22_POP': 'Pop. 2022',
                 'P16_POP': 'Pop. 2016',
@@ -173,7 +173,7 @@ with col2:
                 'DECESD24': 'NB décès 2024'},
                 use_container_width=False,hide_index=True)
     with tab2:
-        st.dataframe(df_comp_logt,
+        st.dataframe(df_comp_logt.T,
                  column_config={
                 'P22_LOG': 'NB logements 2022',
                 'P22_RP': 'Nb rés.pal. 2022',
@@ -181,7 +181,7 @@ with col2:
                 'P22_LOGVAC': 'Nb logements vacants 2022'},
                  use_container_width=False,hide_index=True)
     with tab3:
-        st.dataframe(df_comp_fisc,
+        st.dataframe(df_comp_fisc.T,
                  column_config={
                 'NBMENFISC21': 'Nb foyers fisc. 2022',
                 'PIMP21': 'Part des foyers fisc. imposés 2021',
@@ -190,7 +190,7 @@ with col2:
                  use_container_width=False,hide_index=True)
     
     with tab4:
-        st.dataframe(df_comp_emp,
+        st.dataframe(df_comp_emp.T,
                  column_config={
                 'P22_EMPLT': 'Nb emplois 2022',
                 'P22_EMPLT_SAL': 'Nb emplois salariés 2022',
@@ -202,7 +202,7 @@ with col2:
                  use_container_width=False,hide_index=True)      
     
     with tab5:
-        st.dataframe(df_comp_eco,
+        st.dataframe(df_comp_eco.T,
                 column_config={
                 'ETTOT23': 'Nb établissements 2023',
                 'ETAZ23': 'Nb étab. agri.sylvi.pêche 2023',
