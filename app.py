@@ -125,7 +125,7 @@ id_com = df_com['id_com'].values[0]
 id_cir = df_com['id_cir'].values[0]
 df_geo_com = load_geo(id_com)    
 
-st.subheader(f"Vous avez sélectionné la commune de **{selected_com}**, dans le département de **{selected_dep}**, en région **{selected_reg}**.")
+st.write(f"Vous avez sélectionné la commune de **{selected_com}**, dans le département de **{selected_dep}**, en région **{selected_reg}**.")
 
 # a.Carte
 col1, col2 = st.columns(2)
