@@ -125,9 +125,9 @@ id_com = df_com['id_com'].values[0]
 id_cir = df_com['id_cir'].values[0]
 df_geo_com = load_geo(id_com)    
 
-# a.Carte
-st.write(f"Vous avez sélectionné la commune de **{selected_com}**, dans le département de **{selected_dep}**, en région **{selected_reg}**.")
+st.subheader(f"Vous avez sélectionné la commune de **{selected_com}**, dans le département de **{selected_dep}**, en région **{selected_reg}**.")
 
+# a.Carte
 col1, col2 = st.columns(2)
 with col1:
     st.subheader("Carte", divider="blue")
@@ -242,7 +242,7 @@ with st.expander("Modélisation",expanded=True):
     numeric_cols = df_comp_centr.select_dtypes(include='number').columns.tolist()
     df_comp_centr[numeric_cols] = df_comp_centr[numeric_cols].round(0).astype(int)
 
-    st.subheader("Comparateur INSEE - Centroids")
+    st.subheader("Comparateur INSEE - Clustering/Centroids")
     df_comp_centr_pop = df_comp_centr[['cluster_dep','P22_POP','P16_POP','NAIS1621','DECE1621','P22_MEN','NAISD24','DECESD24']]
     df_comp_centr_logt = df_comp_centr[['cluster_dep','P22_LOG','P22_RP','P22_RSECOCC','P22_LOGVAC']]
     df_comp_centr_fisc = df_comp_centr[['cluster_dep','NBMENFISC21','PIMP21','MED21','TP6021']]
