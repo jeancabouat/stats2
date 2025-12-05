@@ -160,26 +160,12 @@ with col2:
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["👨‍👩‍👧‍👦 Population", "🏠 Logement", "📤Fiscalité", "🏭 Emploi", "💶 Économie"])
     
     with tab1:
-        st.dataframe(df_comp_pop.T.rename(
-    index={'P22_POP': 'Pop. 2022',
-           'P16_POP': 'Pop. 2016',
-           'NAIS1621': 'Nb naissances 2016-2021',
-           'DECE1621': 'NB décès 2016-2021',
-           'P22_MEN': 'NB ménages 2022',
-           'NAISD24': 'NB naissances 2024',
-           'DECESD24': 'NB décès 2024'}
-),
-                 column_config={
-                '0': ''},
-                width="stretch")
+        st.dataframe(df_comp_pop.T.rename(index={'P22_POP': 'Pop. 2022','P16_POP': 'Pop. 2016','NAIS1621': 'Nb naissances 2016-2021','DECE1621': 'NB décès 2016-2021',
+                                                 'P22_MEN': 'NB ménages 2022','NAISD24': 'NB naissances 2024','DECESD24': 'NB décès 2024'}),
+                     column_config={'0': ''},width="stretch")
     with tab2:
-        st.dataframe(df_comp_logt.T,
-                 column_config={
-                'P22_LOG': 'NB logements 2022',
-                'P22_RP': 'Nb rés.pal. 2022',
-                'P22_RSECOCC': 'Nb rés.sec et occas. 2022',
-                'P22_LOGVAC': 'Nb logements vacants 2022'},
-                 width="stretch")
+        st.dataframe(df_comp_logt.T.rename(index={'P22_LOG': 'NB logements 2022','P22_RP': 'Nb rés.pal. 2022','P22_RSECOCC': 'Nb rés.sec et occas. 2022','P22_LOGVAC': 'Nb logements vacants 2022'}),
+                     column_config={'0': ''},width="stretch")
     with tab3:
         st.dataframe(df_comp_fisc.T,
                  column_config={
