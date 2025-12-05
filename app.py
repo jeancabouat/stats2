@@ -130,13 +130,15 @@ df_geo_com = load_geo(id_com)
 #st.header("Carte")
 st.write(f"Vous avez sélectionné la commune de **{selected_com}**, dans le département de **{selected_dep}**, en région **{selected_reg}**.")
 
-#Read the HTML content from the file
-html_content_map = read_html_file('cartes/' + id_dep + '/map_' + id_com + '.html')
-# Display the HTML content in Streamlit
-
-map_container = st.container()
-with map_container:
-    st.components.v1.html(html_content_map,height=800)
+col1, col2 = st.columns(2)
+with col1:
+    #Read the HTML content from the file
+    html_content_map = read_html_file('cartes/' + id_dep + '/map_' + id_com + '.html')
+    # Display the HTML content in Streamlit
+    
+    map_container = st.container()
+    with map_container:
+        st.components.v1.html(html_content_map,height=800)
 
 # b.Comparateur INSEE
 query_com = "SELECT * FROM insee_comparateur_sample WHERE """"id_com"""" = '" + id_com  + "'"
@@ -147,71 +149,71 @@ numeric_cols = df_comp.select_dtypes(include='number').columns.tolist()
 numeric_cols.remove('id_reg')
 df_comp[numeric_cols] = df_comp[numeric_cols].round(0).astype(int)
 
-st.header("Comparateur INSEE")
-
-st.write(f"Superficie: **{df_comp['SUPERF'].values[0]}** km²")
-df_comp_pop = df_comp[['P22_POP','P16_POP','NAIS1621','DECE1621','P22_MEN','NAISD24','DECESD24']]
-df_comp_logt = df_comp[['P22_LOG','P22_RP','P22_RSECOCC','P22_LOGVAC']]
-df_comp_fisc = df_comp[['NBMENFISC21','PIMP21','MED21','TP6021']]
-df_comp_emp = df_comp[['P22_EMPLT','P22_EMPLT_SAL','P16_EMPLT','P22_POP1564','P22_CHOM1564','P22_ACT1564']]
-df_comp_eco = df_comp[['ETTOT23','ETAZ23','ETBE23','ETFZ23','ETGU23','ETOQ23','ETTEF123','ETTEFP1023']]
-
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["👨‍👩‍👧‍👦 Population", "🏠 Logement", "📤Fiscalité", "🏭 Emploi", "💶 Économie"])
-
-with tab1:
-    st.dataframe(df_comp_pop,
-             column_config={
-            'P22_POP': 'Pop. 2022',
-            'P16_POP': 'Pop. 2016',
-            'NAIS1621': 'Nb naissances 2016-2021',
-            'DECE1621': 'NB décès 2016-2021',
-            'P22_MEN': 'NB ménages 2022',
-            'NAISD24': 'NB naissances 2024',
-            'DECESD24': 'NB décès 2024'},
-            use_container_width=False,hide_index=True)
-with tab2:
-    st.dataframe(df_comp_logt,
-             column_config={
-            'P22_LOG': 'NB logements 2022',
-            'P22_RP': 'Nb rés.pal. 2022',
-            'P22_RSECOCC': 'Nb rés.sec et occas. 2022',
-            'P22_LOGVAC': 'Nb logements vacants 2022'},
-             use_container_width=False,hide_index=True)
-with tab3:
-    st.dataframe(df_comp_fisc,
-             column_config={
-            'NBMENFISC21': 'Nb foyers fisc. 2022',
-            'PIMP21': 'Part des foyers fisc. imposés 2021',
-            'MED21': 'Médiane du niveau de vie 2021',
-            'TP6021': 'Tx de pauvreté 2021'},
-             use_container_width=False,hide_index=True)
-
-with tab4:
-    st.dataframe(df_comp_emp,
-             column_config={
-            'P22_EMPLT': 'Nb emplois 2022',
-            'P22_EMPLT_SAL': 'Nb emplois salariés 2022',
-            'P16_EMPLT': 'Nb emplos 2016',
-            'P22_POP1564': 'Nb pers. 15-64 ans 2022',
-            'P22_CHOM1564': 'Nb chômeurs 15-64 ans 2022',
-            'P22_ACT1564': 'Nb pers. actives 15-64 ans 2022'
-             },
-             use_container_width=False,hide_index=True)      
-
-with tab5:
-    st.dataframe(df_comp_eco,
-            column_config={
-            'ETTOT23': 'Nb établissements 2023',
-            'ETAZ23': 'Nb étab. agri.sylvi.pêche 2023',
-            'ETBE23': 'Nb étab. industriels 2023',
-            'ETFZ23': 'Nb étab. construction 2023',
-            'ETGU23': 'Nb étab. comm. transports services fin. 2023',
-            'ETOQ23': 'Nb étab.publ. enseignement santé/social',
-            'ETTEF123': 'Nb étab. 1-9 salariés 2023',
-            'ETTEFP1023': 'Nb étab. +10 salariés 2023'
-            },
-             use_container_width=False,hide_index=True)
-
+with col2:
+    st.header("Comparateur INSEE")
+    st.write(f"Superficie: **{df_comp['SUPERF'].values[0]}** km²")
+    df_comp_pop = df_comp[['P22_POP','P16_POP','NAIS1621','DECE1621','P22_MEN','NAISD24','DECESD24']]
+    df_comp_logt = df_comp[['P22_LOG','P22_RP','P22_RSECOCC','P22_LOGVAC']]
+    df_comp_fisc = df_comp[['NBMENFISC21','PIMP21','MED21','TP6021']]
+    df_comp_emp = df_comp[['P22_EMPLT','P22_EMPLT_SAL','P16_EMPLT','P22_POP1564','P22_CHOM1564','P22_ACT1564']]
+    df_comp_eco = df_comp[['ETTOT23','ETAZ23','ETBE23','ETFZ23','ETGU23','ETOQ23','ETTEF123','ETTEFP1023']]
+    
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["👨‍👩‍👧‍👦 Population", "🏠 Logement", "📤Fiscalité", "🏭 Emploi", "💶 Économie"])
+    
+    with tab1:
+        st.dataframe(df_comp_pop,
+                 column_config={
+                'P22_POP': 'Pop. 2022',
+                'P16_POP': 'Pop. 2016',
+                'NAIS1621': 'Nb naissances 2016-2021',
+                'DECE1621': 'NB décès 2016-2021',
+                'P22_MEN': 'NB ménages 2022',
+                'NAISD24': 'NB naissances 2024',
+                'DECESD24': 'NB décès 2024'},
+                use_container_width=False,hide_index=True)
+    with tab2:
+        st.dataframe(df_comp_logt,
+                 column_config={
+                'P22_LOG': 'NB logements 2022',
+                'P22_RP': 'Nb rés.pal. 2022',
+                'P22_RSECOCC': 'Nb rés.sec et occas. 2022',
+                'P22_LOGVAC': 'Nb logements vacants 2022'},
+                 use_container_width=False,hide_index=True)
+    with tab3:
+        st.dataframe(df_comp_fisc,
+                 column_config={
+                'NBMENFISC21': 'Nb foyers fisc. 2022',
+                'PIMP21': 'Part des foyers fisc. imposés 2021',
+                'MED21': 'Médiane du niveau de vie 2021',
+                'TP6021': 'Tx de pauvreté 2021'},
+                 use_container_width=False,hide_index=True)
+    
+    with tab4:
+        st.dataframe(df_comp_emp,
+                 column_config={
+                'P22_EMPLT': 'Nb emplois 2022',
+                'P22_EMPLT_SAL': 'Nb emplois salariés 2022',
+                'P16_EMPLT': 'Nb emplos 2016',
+                'P22_POP1564': 'Nb pers. 15-64 ans 2022',
+                'P22_CHOM1564': 'Nb chômeurs 15-64 ans 2022',
+                'P22_ACT1564': 'Nb pers. actives 15-64 ans 2022'
+                 },
+                 use_container_width=False,hide_index=True)      
+    
+    with tab5:
+        st.dataframe(df_comp_eco,
+                column_config={
+                'ETTOT23': 'Nb établissements 2023',
+                'ETAZ23': 'Nb étab. agri.sylvi.pêche 2023',
+                'ETBE23': 'Nb étab. industriels 2023',
+                'ETFZ23': 'Nb étab. construction 2023',
+                'ETGU23': 'Nb étab. comm. transports services fin. 2023',
+                'ETOQ23': 'Nb étab.publ. enseignement santé/social',
+                'ETTEF123': 'Nb étab. 1-9 salariés 2023',
+                'ETTEFP1023': 'Nb étab. +10 salariés 2023'
+                },
+                 use_container_width=False,hide_index=True)
+    
 # c.Analyses
 st.header("Analyses")
 
