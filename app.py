@@ -257,7 +257,14 @@ with st.expander("Modélisation"):
 
     with col2_mod:
         st.dataframe(table_pivot.fillna(''),
-                     use_container_width=False,hide_index=True)
+                    column_config={
+                    'cluster': 'Cluster',
+                    'parti': 'Parti politique',
+                    'lib_part_eur': 'Elections européennes',
+                    'lib_part_leg1': 'Elections leg. - 1er tour',
+                    'lib_part_leg2': 'Elections leg. - 2ème tour',
+                     },
+                     use_container_width=False,hide_index=False)
 
         
     query_com_centr = "SELECT * FROM data_model_output_centroid WHERE """"dep"""" = '" + id_dep  + "' ORDER BY cluster_dep"
