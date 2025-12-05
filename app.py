@@ -31,7 +31,7 @@ import warnings
 with warnings.catch_warnings():
     warnings.simplefilter("ignore", category=pd.errors.SettingWithCopyWarning)
 
-conn_string = "postgresql://" + os.environ['AIVEN_URL']
+conn_string = "postgresql://" + AIVEN_URL
 engine = create_engine(conn_string)
 
 st.set_page_config(layout="wide")
