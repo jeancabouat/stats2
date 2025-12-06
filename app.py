@@ -83,7 +83,7 @@ default_value = "Île-de-France"
 default_index = regions.index(default_value)
 
 with st.sidebar:
-    st.image("content/logo.png",width="stretch")
+    #st.image("content/logo.png",width="stretch")
     st.header("Sélection géographique")
     # ---------- 3️⃣ Region selectbox ----------
     selected_reg = st.selectbox(
